@@ -38,6 +38,16 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(quickfix nlohmann_json curl)
 
 # ---------------------------------------------------------------------------
+# Fix QuickFIX Includes (Github zip archives omit the include folder)
+# ---------------------------------------------------------------------------
+if(NOT EXISTS "${quickfix_SOURCE_DIR}/include/quickfix/Application.h")
+    message(STATUS "Copying QuickFIX headers to include/quickfix...")
+    file(COPY "${quickfix_SOURCE_DIR}/src/C++/" 
+         DESTINATION "${quickfix_SOURCE_DIR}/include/quickfix" 
+         FILES_MATCHING PATTERN "*.h")
+endif()
+
+# ---------------------------------------------------------------------------
 # Sources
 # ---------------------------------------------------------------------------
 set(SOURCES
