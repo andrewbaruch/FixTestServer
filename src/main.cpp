@@ -1,7 +1,7 @@
 #include "MockCQGApplication.h"
 
 #include <quickfix/FileStore.h>
-#include <quickfix/FileLog.h>
+#include <quickfix/ScreenLog.h>
 #include <quickfix/ThreadedSocketAcceptor.h>
 #include <quickfix/SessionSettings.h>
 
@@ -56,8 +56,8 @@ int main(int argc, char** argv) {
         // Message store (persists sequence numbers)
         FIX::FileStoreFactory storeFactory(settings);
 
-        // Message log (raw FIX messages)
-        FIX::FileLogFactory logFactory(settings);
+        // Message log (print to console for easier debugging)
+        FIX::ScreenLogFactory logFactory(settings);
 
         // Create the threaded acceptor to prevent blocking heartbeats
         FIX::ThreadedSocketAcceptor acceptor(
