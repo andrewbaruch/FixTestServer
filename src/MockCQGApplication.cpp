@@ -7,6 +7,25 @@
 
 #include <iostream>
 #include <sstream>
+#include <iomanip>
+#include <chrono>
+
+namespace {
+    std::string getSendingTimeHR() {
+        auto now = std::chrono::system_clock::now();
+        auto ms = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()) % 1000000;
+        auto timer = std::chrono::system_clock::to_time_t(now);
+        std::tm bt;
+#ifdef _WIN32
+        gmtime_s(&bt, &timer);
+#else
+        gmtime_r(&timer, &bt);
+#endif
+        std::ostringstream oss;
+        oss << std::put_time(&bt, "%Y%m%d-%H:%M:%S") << '.' << std::setfill('0') << std::setw(6) << ms.count();
+        return oss.str();
+    }
+}
 
 namespace MockCQG {
 
@@ -48,15 +67,17 @@ void MockCQGApplication::onLogout(const FIX::SessionID& sessionID) {
     std::cout << "[MockCQG] Client logged out: " << sessionID << std::endl;
 }
 
-void MockCQGApplication::toAdmin(FIX::Message& /*message*/,
+void MockCQGApplication::toAdmin(FIX::Message& message,
                                   const FIX::SessionID& /*sessionID*/) {
-    // No custom admin message handling needed
+    // CQG requires tag 20173 (SendingTimeHR) on all messages
+    message.getHeader().setField(FIX::StringField(20173, getSendingTimeHR()));
 }
 
-void MockCQGApplication::toApp(FIX::Message& /*message*/,
+void MockCQGApplication::toApp(FIX::Message& message,
                                 const FIX::SessionID& /*sessionID*/)
     throw(FIX::DoNotSend) {
-    // No custom outbound app message handling needed
+    // CQG requires tag 20173 (SendingTimeHR) on all messages
+    message.getHeader().setField(FIX::StringField(20173, getSendingTimeHR()));
 }
 
 void MockCQGApplication::fromAdmin(const FIX::Message& /*message*/,
