@@ -1,0 +1,23 @@
+# CMake build directory
+build/
+
+# Object files and executables
+*.o
+*.obj
+*.exe
+*.dll
+*.lib
+*.pdb
+
+# Visual Studio files
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Mac/Linux specific
+.DS_Store
+
+# Temporary files
+*.log
