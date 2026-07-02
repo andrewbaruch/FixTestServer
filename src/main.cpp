@@ -2,7 +2,7 @@
 
 #include <quickfix/FileStore.h>
 #include <quickfix/FileLog.h>
-#include <quickfix/SocketAcceptor.h>
+#include <quickfix/ThreadedSocketAcceptor.h>
 #include <quickfix/SessionSettings.h>
 
 #include <iostream>
@@ -59,8 +59,8 @@ int main(int argc, char** argv) {
         // Message log (raw FIX messages)
         FIX::FileLogFactory logFactory(settings);
 
-        // Create the acceptor
-        FIX::SocketAcceptor acceptor(
+        // Create the threaded acceptor to prevent blocking heartbeats
+        FIX::ThreadedSocketAcceptor acceptor(
             application, storeFactory, settings, logFactory);
 
         // Start accepting connections
