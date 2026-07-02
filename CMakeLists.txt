@@ -17,14 +17,12 @@ set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
     quickfix
-    GIT_REPOSITORY https://github.com/quickfix/quickfix.git
-    GIT_TAG        master
+    URL https://github.com/quickfix/quickfix/archive/refs/heads/master.zip
 )
 
 FetchContent_Declare(
     nlohmann_json
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG        v3.11.3
+    URL https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.zip
 )
 
 # Fetch CURL
@@ -34,8 +32,7 @@ set(CURL_USE_SCHANNEL ON CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
     curl
-    GIT_REPOSITORY https://github.com/curl/curl.git
-    GIT_TAG        curl-8_4_0
+    URL https://github.com/curl/curl/archive/refs/tags/curl-8_4_0.zip
 )
 
 FetchContent_MakeAvailable(quickfix nlohmann_json curl)
