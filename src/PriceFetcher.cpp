@@ -68,12 +68,12 @@ double PriceFetcher::fetchFromApi(const std::string& symbol)
     }
 
     std::string querySymbol = symbol;
-    if (symbol == "NQ") querySymbol = "NQ=F";
-    else if (symbol == "ES") querySymbol = "ES=F";
+    if (symbol == "NQ" || symbol == "ENQ") querySymbol = "NQ=F";
+    else if (symbol == "ES" || symbol == "EP") querySymbol = "ES=F";
     else if (symbol == "YM") querySymbol = "YM=F";
     else if (symbol == "RTY") querySymbol = "RTY=F";
-    else if (symbol == "CL") querySymbol = "CL=F";
-    else if (symbol == "GC") querySymbol = "GC=F";
+    else if (symbol == "CL" || symbol == "CLE") querySymbol = "CL=F";
+    else if (symbol == "GC" || symbol == "GCE") querySymbol = "GC=F";
     else if (symbol == "CN") querySymbol = "XIN9.FGI";
 
     std::string url =
@@ -107,12 +107,23 @@ double PriceFetcher::fetchFromApi(const std::string& symbol)
 
         // Parse the JSON response
         auto json = nlohmann::json::parse(responseBody);
-        double price = json["chart"]["result"][0]["meta"]["regularMarketPrice"]
-                           .get<double>();
+        
+        if (json.contains("chart") && json["chart"].contains("result") && !json["chart"]["result"].is_null()) {
+            auto& result = json["chart"]["result"];
+            if (result.is_array() && !result.empty()) {
+                auto& meta = result[0]["meta"];
+                if (meta.contains("regularMarketPrice") && !meta["regularMarketPrice"].is_null()) {
+                    double price = meta["regularMarketPrice"].get<double>();
+                    curl_easy_cleanup(curl);
+                    std::cerr << "[PriceFetcher] Fetched " << symbol << " = " << price << "\n";
+                    return price;
+                }
+            }
+        }
 
+        std::cerr << "[PriceFetcher] Failed to find price in JSON for " << symbol << "\n";
         curl_easy_cleanup(curl);
-        std::cerr << "[PriceFetcher] Fetched " << symbol << " = " << price << "\n";
-        return price;
+        return 0.0;
 
     } catch (const std::exception& ex) {
         std::cerr << "[PriceFetcher] Exception fetching " << symbol
