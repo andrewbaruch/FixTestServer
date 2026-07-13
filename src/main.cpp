@@ -1,10 +1,7 @@
 #include "MockCQGApplication.h"
 
 #include <quickfix/FileStore.h>
-<<<<<<< Updated upstream
-=======
 #include <quickfix/Log.h>
->>>>>>> Stashed changes
 #include <quickfix/ThreadedSocketAcceptor.h>
 #include <quickfix/SessionSettings.h>
 
