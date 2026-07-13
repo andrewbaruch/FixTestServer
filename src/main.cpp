@@ -1,6 +1,7 @@
 #include "MockCQGApplication.h"
 
 #include <quickfix/FileStore.h>
+#include <quickfix/Log.h>
 #include <quickfix/ThreadedSocketAcceptor.h>
 #include <quickfix/SessionSettings.h>
 
