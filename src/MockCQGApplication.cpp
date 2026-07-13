@@ -70,6 +70,7 @@ void MockCQGApplication::onLogout(const FIX::SessionID& sessionID) {
 void MockCQGApplication::toAdmin(FIX::Message& message,
                                   const FIX::SessionID& /*sessionID*/) {
     // CQG requires tag 20173 (SendingTimeHR) on all messages
+    message.getHeader().setField(FIX::StringField(20026, "FIX 4.2"));
     message.getHeader().setField(FIX::StringField(20173, getSendingTimeHR()));
 }
 
@@ -77,6 +78,7 @@ void MockCQGApplication::toApp(FIX::Message& message,
                                 const FIX::SessionID& /*sessionID*/)
     throw(FIX::DoNotSend) {
     // CQG requires tag 20173 (SendingTimeHR) on all messages
+    message.getHeader().setField(FIX::StringField(20026, "FIX 4.2"));
     message.getHeader().setField(FIX::StringField(20173, getSendingTimeHR()));
 }
 
