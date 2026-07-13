@@ -19,15 +19,15 @@ void signalHandler(int signum) {
 
 void printBanner() {
     std::cout << R"(
-  ╔══════════════════════════════════════════════════════╗
-  ║         Mock CQG FIX 4.2 Server                     ║
-  ║         For Testing & Conformance                    ║
-  ╠══════════════════════════════════════════════════════╣
-  ║  Protocol:   FIX 4.2                                 ║
-  ║  Port:       5001                                    ║
-  ║  SenderComp: CQG                                     ║
-  ║  TargetComp: CLIENT                                  ║
-  ╚══════════════════════════════════════════════════════╝
+  ________________________________________________________
+  |         Mock CQG FIX 4.2 Server                      |
+  |         For Testing & Conformance                    |
+  |______________________________________________________|
+  |  Protocol:   FIX 4.2                                 |
+  |  Port:       5001                                    |
+  |  SenderComp: CQG                                     |
+  |  TargetComp: CLIENT                                  |
+  |______________________________________________________|
 )" << std::endl;
 }
 
@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
         configFile = argv[1];
     }
 
-    printBanner();
+    printBanner(); 
 
     // Register signal handlers for clean shutdown
     std::signal(SIGINT, signalHandler);
